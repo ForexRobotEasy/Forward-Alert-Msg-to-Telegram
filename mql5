@@ -1,0 +1,72 @@
+mql5
+// Program: Forward Alert Msg to Telegram
+// Developer's Site: forexroboteasy.com
+// Developer: Forex Robot Easy Team
+
+#property strict
+#property version      '1.00'
+#property description  'Code for integrating Forward Alert Msg with Telegram'
+#property link         'https://forexroboteasy.com'
+
+// Include necessary libraries
+#include <Telegram.mqh>
+
+// Define global variables
+CTelegram    telegram;   // Telegram object
+string       chatID;     // Telegram chat ID
+
+// Initialize the Telegram connection
+bool InitializeTelegram()
+{
+   if(!telegram.Initialize())
+   {
+      Print('Failed to initialize Telegram connection.');
+      return false;
+   }
+   
+   // Set the chat ID for sending messages
+   chatID = 'YOUR_CHAT_ID';
+   
+   return true;
+}
+
+// Function to send real-time Forex alerts to traders using Telegram
+void SendForexAlert(string alertMessage)
+{
+   // Check if Telegram is initialized
+   if(!telegram.IsInitialized())
+   {
+      Print('Telegram connection is not initialized.');
+      return;
+   }
+   
+   // Send the alert message to the trader's Telegram account
+   telegram.SendMessage(chatID, alertMessage);
+}
+
+// Function to check market trends and send instant updates to traders
+void CheckMarketTrends()
+{
+   // Check market trends and generate alert messages
+   string trendMessage = 'Market trends: Bullish';
+   
+   // Send the market trend update to traders
+   SendForexAlert(trendMessage);
+}
+
+// Entry point of the program
+void OnStart()
+{
+   // Initialize the Telegram connection
+   if(!InitializeTelegram())
+      return;
+   
+   // Check market trends and send instant updates
+   CheckMarketTrends();
+   
+   // Add additional code here for other functionalities
+   // ...
+   
+   // Terminate the Telegram connection
+   telegram.Terminate();
+}
